@@ -1,0 +1,23 @@
+﻿Hackathon 1                 
+NOKIA 3310  “Game Console” in Python
+Team:
+Ilya Nosovsky + Ivan Kozin
+Info:
+23.05.2023
+v1
+Main Idea:
+We will have a menu with the ability to choose which game you want to play. We will have the choice from 2-4 games like Tetris, Saper, Snake, Dino, Tamogochi, Sudoku and Calculator. All the results of all games we will store in Database, then we will be able to present it to the user. 
+
+
+Web App description:
+1. Menu with choice
+2. Game 1 with Results
+3. Game 2 with Results
+4. Results of all the games
+        
+Requirements
+Technical
+languages to be used:
+* Python with pygame module
+* Postgresql
+* API (maybe)
