@@ -7,7 +7,7 @@ class Ino(pygame.sprite.Sprite):
         # initialize the Ino and set its starting position
         super(Ino, self).__init__()
         self.screen = screen
-        self.image = pygame.image.load('Week4/Day5/SpaceGame/image/ino.png')
+        self.image = pygame.image.load('SpaceGame/image/ino.png')
         self.rect = self.image.get_rect()
         self.rect.x = self.rect.width
         self.rect.y = self.rect.height

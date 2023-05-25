@@ -4,7 +4,7 @@ class Gun():
 
     def __init__(self, screen):
         self.screen = screen
-        self.image = pygame.image.load('Week4/Day5/SpaceGame/image/laser_gun.png')
+        self.image = pygame.image.load('SpaceGame/image/laser_gun.png')
         self.rect = self.image.get_rect()
         self.screen_rect = screen.get_rect()
         self.rect.centerx = self.screen_rect.centerx
@@ -25,4 +25,9 @@ class Gun():
             self.center -= 1.5
 
         self.rect.centerx = self.center
+
+    def create_gun(self):
+        # create a gun in the center of the bottom side
+        self.center = self.screen_rect.centerx
+
 
