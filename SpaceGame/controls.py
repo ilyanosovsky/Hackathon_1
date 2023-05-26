@@ -4,28 +4,28 @@ from bullet import Bullet
 from ino import Ino
 import time
 
-def events(screen, gun, bullets):
-    for event in pygame.event.get():
+def events(screen, gun, bullets): # Check events of the game
+    for event in pygame.event.get(): 
         if event.type == pygame.QUIT:
             sys.exit()
 
-        elif event.type == pygame.KEYDOWN:
+        elif event.type == pygame.KEYDOWN: # Check if the key is pressed
             # move the gun to the right
-            if event.key == pygame.K_d:
+            if event.key == pygame.K_d: 
                 gun.mright = True
-            elif event.key == pygame.K_a:
+            elif event.key == pygame.K_a: 
                 gun.mleft = True
-            elif event.key == pygame.K_SPACE:
-                new_bullet = Bullet(screen, gun)
-                bullets.add(new_bullet)
-        elif event.type == pygame.KEYUP:
+            elif event.key == pygame.K_SPACE: # Check if the key is SPACE
+                new_bullet = Bullet(screen, gun) 
+                bullets.add(new_bullet) # Add new bullet to the group of bullets
+        elif event.type == pygame.KEYUP: # Check if the key is released
             # stop the gun
             if event.key == pygame.K_d:
                 gun.mright = False
             elif event.key == pygame.K_a:
                 gun.mleft = False
 
-def update(bg_img, screen, stats, sc, gun, inos, bullets):
+def update(bg_img, screen, stats, sc, gun, inos, bullets): # Update screen
     # redraw the screen during each pass through the loop
     screen.blit(bg_img, (0, 0))
     sc.show_score()
@@ -35,13 +35,13 @@ def update(bg_img, screen, stats, sc, gun, inos, bullets):
     inos.draw(screen)
     pygame.display.flip()
 
-def update_bullets(screen, stats, sc, inos, bullets):
+def update_bullets(screen, stats, sc, inos, bullets): # Update bullets
     # delete bullets that have disappeared
     bullets.update()
     for bullet in bullets.copy():
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
-    collisions = pygame.sprite.groupcollide(bullets, inos, True, True)
+    collisions = pygame.sprite.groupcollide(bullets, inos, True, True) # Check collisions between bullets and Inos
     if collisions:
         for inos in collisions.values():
             stats.score += 10 * len(inos)

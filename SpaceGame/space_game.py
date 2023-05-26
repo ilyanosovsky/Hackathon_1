@@ -9,20 +9,20 @@ def run(): # Main function
     screen = pygame.display.set_mode((700, 800)) # Create screen
     pygame.display.set_caption("Space Game") # Set caption
     bg_img = pygame.image.load("SpaceGame/image/bg_stars.jpeg") # Load background image
-    gun = Gun(screen)
-    bullets = Group()
-    inos = Group()
-    controls.create_army(screen, inos)
-    stats = Stats()
-    sc = Scores(screen, stats)
+    gun = Gun(screen) # Create gun
+    bullets = Group() # Create group of bullets
+    inos = Group() # Create group of Inos
+    controls.create_army(screen, inos) # Create army of Inos
+    stats = Stats() # Create stats
+    sc = Scores(screen, stats) # Create scores
 
-    while True:
-        controls.events(screen, gun, bullets)
-        if stats.run_game:
-            gun.update_gun()
-            controls.update(bg_img, screen, stats, sc, gun, inos, bullets)
-            controls.update_bullets(screen, stats, sc, inos, bullets)
-            controls.update_inos(stats, screen, sc, gun, inos, bullets)
+    while True: # Main loop of the game
+        controls.events(screen, gun, bullets) # Check events of the game 
+        if stats.run_game: # Check if the game is running
+            gun.update_gun() # Update gun position
+            controls.update(bg_img, screen, stats, sc, gun, inos, bullets) # Update screen
+            controls.update_bullets(screen, stats, sc, inos, bullets) # Update bullets
+            controls.update_inos(stats, screen, sc, gun, inos, bullets) # Update Inos 
 
 
-run()
+run() # Run main function
