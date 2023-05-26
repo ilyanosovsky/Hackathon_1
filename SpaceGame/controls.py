@@ -25,9 +25,9 @@ def events(screen, gun, bullets):
             elif event.key == pygame.K_a:
                 gun.mleft = False
 
-def update(bg_color, screen, stats, sc, gun, inos, bullets):
+def update(bg_img, screen, stats, sc, gun, inos, bullets):
     # redraw the screen during each pass through the loop
-    screen.fill(bg_color)
+    screen.blit(bg_img, (0, 0))
     sc.show_score()
     for bullet in bullets.sprites():
         bullet.draw_bullet()
