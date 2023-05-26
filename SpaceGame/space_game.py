@@ -5,6 +5,8 @@ from stats import Stats
 from scores import Scores
 
 
+
+
 def run():
     pygame.init()
     screen = pygame.display.set_mode((700, 800))
