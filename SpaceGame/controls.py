@@ -35,21 +35,28 @@ def update(bg_color, screen, stats, sc, gun, inos, bullets):
     inos.draw(screen)
     pygame.display.flip()
 
-def update_bullets(screen, inos, bullets):
+def update_bullets(screen, stats, sc, inos, bullets):
     # delete bullets that have disappeared
     bullets.update()
     for bullet in bullets.copy():
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
     collisions = pygame.sprite.groupcollide(bullets, inos, True, True)
+    if collisions:
+        for inos in collisions.values():
+            stats.score += 10 * len(inos)
+        sc.image_score()
+        check_high_score(stats, sc)
+        sc.image_guns()
     if len(inos) == 0:
         bullets.empty()
         create_army(screen, inos)
     
-def gun_kill(stats, screen, gun, inos, bullets):
+def gun_kill(stats, screen, sc, gun, inos, bullets):
     # check if the Inos have reached the bottom of the screen
     if stats.guns_left > 0:
         stats.guns_left -= 1
+        sc.image_guns()
         inos.empty()
         bullets.empty()
         create_army(screen, inos)
@@ -60,19 +67,19 @@ def gun_kill(stats, screen, gun, inos, bullets):
         sys.exit()
 
 
-def update_inos(stats, screen, gun, inos, bullets):
+def update_inos(stats, screen, sc, gun, inos, bullets):
     # update the position of all Inos in the army
     inos.update()
     if pygame.sprite.spritecollideany(gun, inos):
-        gun_kill(stats, screen, gun, inos, bullets)
-    inos_check(stats, screen, gun, inos, bullets)
+        gun_kill(stats, screen, sc, gun, inos, bullets)
+    inos_check(stats, screen, sc, gun, inos, bullets)
 
-def inos_check(stats, screen, gun, inos, bullets):
+def inos_check(stats, screen, sc, gun, inos, bullets):
     # check whether inos got to the bottom of the screen or not
     screen_rect = screen.get_rect()
     for ino in inos.sprites():
         if ino.rect.bottom >= screen_rect.bottom:
-            gun_kill(stats, screen, gun, inos, bullets)
+            gun_kill(stats, screen, sc, gun, inos, bullets)
             break
 
 
@@ -92,5 +99,13 @@ def create_army(screen, inos):
             ino.rect.x = ino.x
             ino.rect.y = ino.rect.height + ino.rect.height * row_number
             inos.add(ino)
+
+def check_high_score(stats, sc):
+    # check if there is a new high score
+    if stats.score > stats.high_score:
+        stats.high_score = stats.score
+        sc.image_high_score()
+        with open('SpaceGame/highscore.txt', 'w') as file_object:
+            file_object.write(str(stats.high_score))
 
 
