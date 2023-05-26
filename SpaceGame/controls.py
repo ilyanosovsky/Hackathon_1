@@ -11,18 +11,18 @@ def events(screen, gun, bullets): # Check events of the game
 
         elif event.type == pygame.KEYDOWN: # Check if the key is pressed
             # move the gun to the right
-            if event.key == pygame.K_d: 
+            if event.key == pygame.K_RIGHT: 
                 gun.mright = True
-            elif event.key == pygame.K_a: 
+            elif event.key == pygame.K_LEFT: 
                 gun.mleft = True
             elif event.key == pygame.K_SPACE: # Check if the key is SPACE
                 new_bullet = Bullet(screen, gun) 
                 bullets.add(new_bullet) # Add new bullet to the group of bullets
         elif event.type == pygame.KEYUP: # Check if the key is released
             # stop the gun
-            if event.key == pygame.K_d:
+            if event.key == pygame.K_RIGHT:
                 gun.mright = False
-            elif event.key == pygame.K_a:
+            elif event.key == pygame.K_LEFT:
                 gun.mleft = False
 
 def update(bg_img, screen, stats, sc, gun, inos, bullets): # Update screen
