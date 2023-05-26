@@ -25,9 +25,10 @@ def events(screen, gun, bullets):
             elif event.key == pygame.K_a:
                 gun.mleft = False
 
-def update(bg_color, screen, gun, inos, bullets):
+def update(bg_color, screen, stats, sc, gun, inos, bullets):
     # redraw the screen during each pass through the loop
     screen.fill(bg_color)
+    sc.show_score()
     for bullet in bullets.sprites():
         bullet.draw_bullet()
     gun.output()
@@ -47,12 +48,16 @@ def update_bullets(screen, inos, bullets):
     
 def gun_kill(stats, screen, gun, inos, bullets):
     # check if the Inos have reached the bottom of the screen
-    stats.guns_left -= 1
-    inos.empty()
-    bullets.empty()
-    create_army(screen, inos)
-    gun.create_gun()
-    time.sleep(1)
+    if stats.guns_left > 0:
+        stats.guns_left -= 1
+        inos.empty()
+        bullets.empty()
+        create_army(screen, inos)
+        gun.create_gun()
+        time.sleep(1)
+    else:   
+        stats.run_game = False
+        sys.exit()
 
 
 def update_inos(stats, screen, gun, inos, bullets):
