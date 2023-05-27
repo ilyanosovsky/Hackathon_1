@@ -27,21 +27,21 @@ def events(screen, gun, bullets): # Check events of the game
                 gun.mleft = False
 
 # create fonction to start the game with press any key to start
-def game_start(screen, stats, sc):
-    # show the screen with pressd any key to start
-    screen.fill((0, 0, 0))
-    # press any key to start
-    font = pygame.font.SysFont(None, 48)
-    text = font.render("Press any key to start", True, (255, 255, 255))
-    text_rect = text.get_rect()
-    text_rect.center = screen.get_rect().center
-    screen.blit(text, text_rect)
-    pygame.display.flip()
-    # wait for key press
-    time.sleep(3)
-    sc.image_score()
-    sc.image_guns()
-    pygame.display.flip() # Make the most recently drawn screen visible.
+# def game_start(screen, stats, sc):
+#     # show the screen with pressd any key to start
+#     screen.fill((0, 0, 0))
+#     # press any key to start
+#     font = pygame.font.SysFont(None, 48)
+#     text = font.render("Press any key to start", True, (255, 255, 255))
+#     text_rect = text.get_rect()
+#     text_rect.center = screen.get_rect().center
+#     screen.blit(text, text_rect)
+#     pygame.display.flip()
+#     # wait for key press
+#     time.sleep(3)
+#     sc.image_score()
+#     sc.image_guns()
+#     pygame.display.flip() # Make the most recently drawn screen visible.
 
 
 
@@ -76,6 +76,7 @@ def update_bullets(screen, stats, sc, inos, bullets): # Update bullets
     
 def gun_kill(stats, screen, sc, gun, inos, bullets):
     # check if the Inos have reached the bottom of the screen
+    # game_start(screen, stats, sc)
     if stats.guns_left > 0:
         stats.guns_left -= 1
         sc.image_guns()
@@ -136,19 +137,18 @@ def game_over(screen, stats, sc):
     # display game over
     # screen.fill((0, 0, 0))
     screen_rect = screen.get_rect()
-    font = pygame.font.SysFont(None, 48)
+    font = pygame.font.SysFont(None, 65)
     game_over_image = font.render('GAME OVER', True, (255, 255, 255), (0, 0, 0))
     game_over_rect = game_over_image.get_rect()
     game_over_rect.center = screen_rect.center
     screen.blit(game_over_image, game_over_rect)
     # press any Key to Resrart
-    font = pygame.font.SysFont(None, 24)
+    font = pygame.font.SysFont(None, 42)
     restart_image = font.render('Press any Key to Restart', True, (255, 255, 255), (0, 0, 0))
     restart_rect = restart_image.get_rect()
     restart_rect.center = screen_rect.center
     restart_rect.y += 100
     screen.blit(restart_image, restart_rect)
-    keys = pygame.key.get_pressed()
     pygame.display.flip()
     stats.run_game = False
     # sys.exit()
