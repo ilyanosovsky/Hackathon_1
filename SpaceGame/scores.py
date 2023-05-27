@@ -44,11 +44,3 @@ class Scores():
         self.screen.blit(self.high_score_img, self.high_score_rect)
         self.guns.draw(self.screen)
 
-    def game_over(self):
-        # display GAME OVER message
-        self.game_over_img = self.font.render('GAME OVER', True, self.text_color, (0, 0, 0))
-        self.game_over_rect = self.game_over_img.get_rect()
-        self.game_over_rect.center = self.screen_rect.center
-        self.screen.blit(self.game_over_img, self.game_over_rect)
-
-

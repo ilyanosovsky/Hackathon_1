@@ -22,7 +22,5 @@ def run(): # Main function
             gun.update_gun() # Update gun position
             controls.update(bg_img, screen, stats, sc, gun, inos, bullets) # Update screen
             controls.update_bullets(screen, stats, sc, inos, bullets) # Update bullets
-            controls.update_inos(stats, screen, sc, gun, inos, bullets) # Update Inos 
-
-
+            controls.update_inos(stats, screen, sc, gun, inos, bullets) # Update Inos  
 run() # Run main function
