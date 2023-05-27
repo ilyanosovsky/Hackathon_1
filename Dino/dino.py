@@ -193,7 +193,7 @@ class Ptero(Obstacle):
 
 
 def main():
-    global game_speed, x_pos_bg, y_pos_bg, points, obstacles
+    global game_speed, x_pos_bg, y_pos_bg, points, obstacles, level
     run = True
     clock = pygame.time.Clock()
     player = Dinosaur()
@@ -203,15 +203,22 @@ def main():
     x_pos_bg = 0
     y_pos_bg = 380
     points = 0
+    level = 0
     font = pygame.font.Font('Dino/Roboto/Roboto-Black.ttf', 20)
     death_count = 0
 
     def score():
-        global points, game_speed
+        global points, game_speed, level
         points += 1
         if points % 100 == 0:
             game_speed += 1
-
+            if points % 500 == 0:
+                level += 1
+        
+        levels = font.render("Level: " + str(level), True, (0, 0, 0))
+        levels_rect = levels.get_rect()
+        levels_rect.center =  (100, 40)
+        screen.blit(levels, levels_rect)
         text = font.render("Points: " + str(points), True, (0, 0, 0))
         text_rect = text.get_rect()
         text_rect.center = (1000, 40)
@@ -265,23 +272,33 @@ def main():
         pygame.display.update()
 
 def menu(death_count):
-    global points
+    global points, level
     run = True
+    lose = None
     while run:
         screen.fill('White')
         font = pygame.font.Font('Dino/Roboto/Roboto-Black.ttf', 30)
         if death_count == 0:
             text = font.render("Press any Key to Start", True, ('Black'))
         elif death_count > 0:
+            lose = font.render("GAME OVER", True, ('Black'))
             text = font.render("Press any Key to Restart", True, ('Black'))
             score = font.render("Points: " + str(points), True, ('Black'))
             score_rect = score.get_rect()
             score_rect.center = (screen_width // 2, screen_height // 2 + 50)
             screen.blit(score, score_rect)
+            levels = font.render("Level: " + str(level), True, ('Black'))
+            levels_rect = levels.get_rect()
+            levels_rect.center =  (screen_width // 2, screen_height // 2 + 100)
+            screen.blit(levels, levels_rect)
+        if lose is not None:
+            lose_rect = lose.get_rect()
+            lose_rect.center = (screen_width  // 2, screen_height // 2 - 200)
+            screen.blit(lose, lose_rect)
         text_rect = text.get_rect()
         text_rect.center = (screen_width // 2, screen_height // 2)
         screen.blit(text, text_rect)
-        screen.blit(dino, (screen_width // 2 - 20, screen_height // 2 - 140))
+        screen.blit(dino, (screen_width // 2 - 40, screen_height // 2 - 140))
         pygame.display.update()
         # option to quit the game safely, restart or exit
         for event in pygame.event.get():
