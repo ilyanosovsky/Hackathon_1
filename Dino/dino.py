@@ -194,7 +194,7 @@ class Ptero(Obstacle):
 
 
 def main():
-    global game_speed, x_pos_bg, y_pos_bg, points, obstacles, level
+    global game_speed, x_pos_bg, y_pos_bg, points, obstacles, level # result_history
     run = True
     clock = pygame.time.Clock()
     player = Dinosaur()
@@ -205,7 +205,10 @@ def main():
     y_pos_bg = 380
     points = 0
     level = 0
-    results = []
+    # result_history = {
+    #     'points' : 0,
+    #     'level' : 0
+    # }
     font = pygame.font.Font('Dino/Roboto/Roboto-Black.ttf', 20)
     death_count = 0
 
@@ -216,7 +219,6 @@ def main():
             game_speed += 1
             if points % 500 == 0:
                 level += 1
-        
         
         levels = font.render("Level: " + str(level), True, (0, 0, 0))
         levels_rect = levels.get_rect()
@@ -236,6 +238,27 @@ def main():
             screen.blit(bg, (image_width + x_pos_bg, y_pos_bg))
             x_pos_bg = 0
         x_pos_bg -= game_speed
+
+    def save_data(points, level):
+        try:
+            conn = psycopg2.connect(
+                host="rogue.db.elephantsql.com",
+                port=5432,
+                database="wocsykfv",
+                user="wocsykfv",
+                password="rwPJlc2S6ceN1uDanxX3cS9f2w9NCDJQ"
+            )
+            cur = conn.cursor()
+            query = f"""
+                INSERT INTO game_results (game_title, points, level)
+                VALUES ('Jumping Dino', {int(points)}, {int(level)})"""
+            cur.execute(query)
+            conn.commit()
+        except Exception as e:
+            print(f'Error: {e}')
+        finally:
+            cur.close()
+            conn.close()
 
     while run:
         for event in pygame.event.get():
@@ -262,6 +285,7 @@ def main():
             if player.dino_rect.colliderect(obstacle.rect):
                 pygame.time.delay(2000)
                 death_count += 1
+                save_data(points, level)
                 menu(death_count)
 
         background()
@@ -274,8 +298,9 @@ def main():
         clock.tick(30)
         pygame.display.update()
 
+
 def menu(death_count):
-    global points, level
+    global points, level, results
     run = True
     lose = None
     while run:
@@ -314,16 +339,5 @@ def menu(death_count):
 
 menu(death_count=0)
 
-def save_data():
-    conn = psycopg2.connect(
-            database='bootcamp',
-            user='ivankozin',
-            password='2158310',
-            host='localhost',
-            port='5432'
-        )
-    cur = conn.cursor()
-    query = f"""
-        INSERT INTO dino_results (game_id, points, level)
-        VALUES ('{int(points)}', '{int(level)}')"""
-    cur.execute(query)
+
+
