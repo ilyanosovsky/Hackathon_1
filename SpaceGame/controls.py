@@ -7,7 +7,8 @@ import time
 def events(screen, gun, bullets): # Check events of the game
     for event in pygame.event.get(): 
         if event.type == pygame.QUIT:
-            sys.exit()
+            # sys.exit()
+            pygame.quit()
 
         elif event.type == pygame.KEYDOWN: # Check if the key is pressed
             # move the gun to the right
@@ -24,6 +25,27 @@ def events(screen, gun, bullets): # Check events of the game
                 gun.mright = False
             elif event.key == pygame.K_LEFT:
                 gun.mleft = False
+
+# create fonction to start the game with press any key to start
+def game_start(screen, stats, sc):
+    # show the screen with pressd any key to start
+    screen.fill((0, 0, 0))
+    # press any key to start
+    font = pygame.font.SysFont(None, 48)
+    text = font.render("Press any key to start", True, (255, 255, 255))
+    text_rect = text.get_rect()
+    text_rect.center = screen.get_rect().center
+    screen.blit(text, text_rect)
+    pygame.display.flip()
+    # wait for key press
+    time.sleep(3)
+    sc.image_score()
+    sc.image_guns()
+    pygame.display.flip() # Make the most recently drawn screen visible.
+
+
+
+
 
 def update(bg_img, screen, stats, sc, gun, inos, bullets): # Update screen
     # redraw the screen during each pass through the loop
@@ -64,13 +86,15 @@ def gun_kill(stats, screen, sc, gun, inos, bullets):
         time.sleep(1)
     else:   
         stats.run_game = False
-        sys.exit()
+        # sys.exit()
+        game_over(screen, stats, sc)
+
 
 
 def update_inos(stats, screen, sc, gun, inos, bullets):
     # update the position of all Inos in the army
     inos.update()
-    if pygame.sprite.spritecollideany(gun, inos):
+    if pygame.sprite.spritecollideany(gun, inos): 
         gun_kill(stats, screen, sc, gun, inos, bullets)
     inos_check(stats, screen, sc, gun, inos, bullets)
 
@@ -107,5 +131,28 @@ def check_high_score(stats, sc):
         sc.image_high_score()
         with open('SpaceGame/highscore.txt', 'w') as file_object:
             file_object.write(str(stats.high_score))
+
+def game_over(screen, stats, sc):
+    # display game over
+    # screen.fill((0, 0, 0))
+    screen_rect = screen.get_rect()
+    font = pygame.font.SysFont(None, 48)
+    game_over_image = font.render('GAME OVER', True, (255, 255, 255), (0, 0, 0))
+    game_over_rect = game_over_image.get_rect()
+    game_over_rect.center = screen_rect.center
+    screen.blit(game_over_image, game_over_rect)
+    # press any Key to Resrart
+    font = pygame.font.SysFont(None, 24)
+    restart_image = font.render('Press any Key to Restart', True, (255, 255, 255), (0, 0, 0))
+    restart_rect = restart_image.get_rect()
+    restart_rect.center = screen_rect.center
+    restart_rect.y += 100
+    screen.blit(restart_image, restart_rect)
+    keys = pygame.key.get_pressed()
+    pygame.display.flip()
+    stats.run_game = False
+    # sys.exit()
+    # pygame.quit()
+    
 
 

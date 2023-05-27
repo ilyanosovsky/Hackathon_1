@@ -9,5 +9,5 @@ class Stats():
 
     def reset_stats(self):
     # initialize statistics that may change during the game
-        self.guns_left = 0
+        self.guns_left = 2
         self.score = 0
