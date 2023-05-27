@@ -2,7 +2,7 @@ import psycopg2
 from main import *
 
 
-def manage_connection():
+def create_table():
     try:
         conn = psycopg2.connect(
             host="rogue.db.elephantsql.com",
@@ -32,29 +32,29 @@ def manage_connection():
     conn.close()
     cur.close()
 
-# manage_connection()
-class TableMAnager:
+# create_table()
+# class TableMAnager:
 
-    @classmethod
-    def get_result(cls):
-        query_user = f"""
-        SELECT * FROM game_results 
-        ORDER BY points DESC LIMIT 1
-        """
-        if manage_connection() == []:
-            return None
-        else:
-            result = manage_connection()
-            return result
+#     @classmethod
+#     def get_result(cls):
+#         query_user = f"""
+#         SELECT * FROM game_results 
+#         ORDER BY points DESC LIMIT 1
+#         """
+#         if manage_connection() == []:
+#             return None
+#         else:
+#             result = manage_connection()
+#             return result
         
-    @classmethod
-    def all_items(cls):
-        query_user = f"""
-        SELECT * FROM menu_items
-        """
-        result = manage_connection()
-        return result
+#     @classmethod
+#     def all_items(cls):
+#         query_user = f"""
+#         SELECT * FROM menu_items
+#         """
+#         result = manage_connection()
+#         return result
 
-# item2 = MenuManager.get_by_name('Beef Stew')
-items = TableMAnager.all_items()
-print(items)
+# # item2 = MenuManager.get_by_name('Beef Stew')
+# items = TableMAnager.all_items()
+# print(items)

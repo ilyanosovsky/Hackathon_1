@@ -1,6 +1,7 @@
 import pygame
 import random
 import psycopg2
+from db import manage_connection
 
 pygame.init()
 
@@ -194,7 +195,7 @@ class Ptero(Obstacle):
 
 
 def main():
-    global game_speed, x_pos_bg, y_pos_bg, points, obstacles, level # result_history
+    global game_speed, x_pos_bg, y_pos_bg, points, obstacles, level 
     run = True
     clock = pygame.time.Clock()
     player = Dinosaur()
@@ -204,11 +205,7 @@ def main():
     x_pos_bg = 0
     y_pos_bg = 380
     points = 0
-    level = 0
-    # result_history = {
-    #     'points' : 0,
-    #     'level' : 0
-    # }
+    level = 1
     font = pygame.font.Font('Dino/Roboto/Roboto-Black.ttf', 20)
     death_count = 0
 
@@ -300,7 +297,7 @@ def main():
 
 
 def menu(death_count):
-    global points, level, results
+    global points, level
     run = True
     lose = None
     while run:
@@ -339,5 +336,37 @@ def menu(death_count):
 
 menu(death_count=0)
 
+def manage_connection(query):
+    try:
+        connection = psycopg2.connect(
+            host="rogue.db.elephantsql.com",
+            port=5432,  
+            database="wocsykfv", 
+            user="wocsykfv",  
+            password="rwPJlc2S6ceN1uDanxX3cS9f2w9NCDJQ"  
+        )
+        with connection:
+            with connection.cursor() as cursor:
+                if "SELECT" in query:
+                    cursor.execute(query)
+                    result = cursor.fetchall()
+                    return result
+                else:
+                    cursor.execute(query)
+                    connection.commit()
+    except Exception as e:
+        print(e)
+    finally:
+        connection.close()
 
-
+def get_result(points):
+        query = f"""
+        SELECT * FROM game_results 
+        ORDER BY {points} DESC LIMIT 1
+        """
+        if manage_connection(query) == []:
+            return None
+        else:
+            result = manage_connection(query)
+            return result
+        
