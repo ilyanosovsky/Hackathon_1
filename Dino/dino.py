@@ -1,5 +1,6 @@
 import pygame
 import random
+import psycopg2
 
 pygame.init()
 
@@ -198,12 +199,13 @@ def main():
     clock = pygame.time.Clock()
     player = Dinosaur()
     cloud = Cloud()
-    game_speed = 14
+    game_speed = 15
     obstacles = []
     x_pos_bg = 0
     y_pos_bg = 380
     points = 0
     level = 0
+    results = []
     font = pygame.font.Font('Dino/Roboto/Roboto-Black.ttf', 20)
     death_count = 0
 
@@ -214,6 +216,7 @@ def main():
             game_speed += 1
             if points % 500 == 0:
                 level += 1
+        
         
         levels = font.render("Level: " + str(level), True, (0, 0, 0))
         levels_rect = levels.get_rect()
@@ -308,4 +311,19 @@ def menu(death_count):
             if event.type == pygame.KEYDOWN:
                 main() # runs main() as soon as any key is pressed
 
+
 menu(death_count=0)
+
+def save_data():
+    conn = psycopg2.connect(
+            database='bootcamp',
+            user='ivankozin',
+            password='2158310',
+            host='localhost',
+            port='5432'
+        )
+    cur = conn.cursor()
+    query = f"""
+        INSERT INTO dino_results (game_id, points, level)
+        VALUES ('{int(points)}', '{int(level)}')"""
+    cur.execute(query)
