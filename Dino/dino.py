@@ -9,33 +9,23 @@ screen_width = 1100
 
 screen = pygame.display.set_mode((screen_width, screen_height))
 
-running = [
-    pygame.image.load('Dino/Images/DinoRun1.png').convert_alpha(),
-    pygame.image.load('Dino/Images/DinoRun2.png').convert_alpha(),
+running = [pygame.image.load('Dino/Images/DinoRun1.png').convert_alpha(),
+    pygame.image.load('Dino/Images/DinoRun2.png').convert_alpha()
 ]
 
-jumping = pygame.image.load('Dino/Images/DinoJump.png').convert_alpha(),
+jumping = pygame.image.load('Dino/Images/DinoJump.png').convert_alpha()
 
-bending = [
-    pygame.image.load('Dino/Images/DinoBend1.png').convert_alpha(),
-    pygame.image.load('Dino/Images/DinoBend2.png').convert_alpha(),
+bending = [pygame.image.load('Dino/Images/DinoBend1.png').convert_alpha(),
+    pygame.image.load('Dino/Images/DinoBend2.png').convert_alpha()
 ]
 
-large_cactus = [
-    pygame.image.load('Dino/Images/LargeCactus1.png').convert_alpha(),
-    pygame.image.load('Dino/Images/LargeCactus2.png').convert_alpha(),
-    pygame.image.load('Dino/Images/LargeCactus3.png').convert_alpha(),
+large_cactus = [pygame.image.load('Dino/Images/LargeCactus1.png').convert_alpha(), pygame.image.load('Dino/Images/LargeCactus2.png').convert_alpha(), pygame.image.load('Dino/Images/LargeCactus3.png').convert_alpha()
 ]
 
-small_cactus = [
-    pygame.image.load('Dino/Images/SmallCactus1.png').convert_alpha(),
-    pygame.image.load('Dino/Images/SmallCactus2.png').convert_alpha(),
-    pygame.image.load('Dino/Images/SmallCactus3.png').convert_alpha(),
+small_cactus = [pygame.image.load('Dino/Images/SmallCactus1.png').convert_alpha(), pygame.image.load('Dino/Images/SmallCactus2.png').convert_alpha(), pygame.image.load('Dino/Images/SmallCactus3.png').convert_alpha()
 ]
 
-bird = [
-    pygame.image.load('Dino/Images/Bird1.png').convert_alpha(),
-    pygame.image.load('Dino/Images/Bird2.png').convert_alpha(),
+bird = [ pygame.image.load('Dino/Images/Bird1.png').convert_alpha(), pygame.image.load('Dino/Images/Bird2.png').convert_alpha()
 ]
 
 cloud = pygame.image.load('Dino/Images/Cloud.png').convert_alpha()
@@ -46,7 +36,7 @@ class Dinosaur:
     x_pos = 80
     y_pos = 310
     y_pos_bend = 340
-    jump_vel = 8.5
+    jump_vel = 8
 
     def __init__(self):
         self.bend_img = bending
@@ -89,7 +79,7 @@ class Dinosaur:
             self.dino_jump = False
 
     def bend(self):
-            self.image = self.run_img[self.step_index // 5]
+            self.image = self.bend_img[self.step_index // 5]
             self.dino_rect = self.image.get_rect()
             self.dino_rect.x = self.x_pos
             self.dino_rect.y = self.y_pos_bend
@@ -104,13 +94,21 @@ class Dinosaur:
 
     def jump(self):
             self.image = self.jump_img
-            if self.dino_jump:
-                self.dino_rect.y -= (self.jump_vel ** 2) / 2
-                self.jump_vel -= 0.8
-            if self.jump_vel < - self.jump_vel:
-                self.dino_jump = False
-                self.jump_vel = self.jump_vel
-                
+            if not self.dino_jump:
+                if self.keys[pygame.K_UP]:
+                    self.dino_jump = True
+                    self.jump_vel = 8 
+            else:             
+                if self.dino_jump >= -8:
+                    if self.dino_jump > 0:
+                        self.dino_rect.y -= (self.dino_jump ** 2) / 2
+                    else:
+                        self.dino_rect.y += (self.dino_jump ** 2) / 2
+                    self.jump_vel -= 1
+                else: # if self.jump_vel < self.jump_vel:
+                    self.dino_jump = False
+                    self.jump_vel = 8
+                    # self.dino_rect.y = self.y_pos
 
     def draw(self, screen):
         screen.blit(self.image, (self.dino_rect.x, self.dino_rect.y))
