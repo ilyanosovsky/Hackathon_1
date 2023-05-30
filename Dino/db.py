@@ -30,7 +30,7 @@ def create_table():
     conn.close()
     cur.close()
 
-create_table()
+#create_table()
 
 # from dino import score
 
@@ -60,7 +60,7 @@ def manage_connection(query):
 def get_result():
         query = f"""
         SELECT MAX(points) FROM game_results
-        """
+        WHERE game_title = 'Jumping Dino'"""
         if manage_connection(query) == []:
             return None
         else:
