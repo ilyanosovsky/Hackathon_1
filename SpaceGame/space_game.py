@@ -33,37 +33,3 @@ def run(): # Main function
                 run() # Run main function
 
 run() # Run the game
-
-# def manage_connection(query):
-#     try:
-#         connection = psycopg2.connect(
-#             host="localhost",
-#             port=5432,  
-#             database="space_game", 
-#             user="postgres",  
-#             password="1235846Qq"  
-#         )
-#         with connection:
-#             with connection.cursor() as cursor:
-#                 if "SELECT" in query:
-#                     cursor.execute(query)
-#                     result = cursor.fetchall()
-#                     return result
-#                 else:
-#                     cursor.execute(query)
-#                     connection.commit()
-#     except Exception as e:
-#         print(e)
-#     finally:
-#         connection.close()
-
-# def get_result():
-#         query = f"""
-#         SELECT * FROM game_results 
-#         ORDER BY {score} DESC LIMIT 1
-#         """
-#         if manage_connection(query) == []:
-#             return None
-#         else:
-#             result = manage_connection(query)
-#             return result

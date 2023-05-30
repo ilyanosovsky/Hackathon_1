@@ -43,10 +43,6 @@ def events(screen, gun, bullets): # Check events of the game
 #     sc.image_guns()
 #     pygame.display.flip() # Make the most recently drawn screen visible.
 
-
-
-
-
 def update(bg_img, screen, stats, sc, gun, inos, bullets): # Update screen
     # redraw the screen during each pass through the loop
     screen.blit(bg_img, (0, 0))
@@ -73,7 +69,8 @@ def update_bullets(screen, stats, sc, inos, bullets): # Update bullets
     if len(inos) == 0:
         bullets.empty()
         create_army(screen, inos)
-    
+
+
 def gun_kill(stats, screen, sc, gun, inos, bullets):
     # check if the Inos have reached the bottom of the screen
     # game_start(screen, stats, sc)

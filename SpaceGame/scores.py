@@ -43,24 +43,3 @@ class Scores():
         self.screen.blit(self.score_img, self.score_rect)
         self.screen.blit(self.high_score_img, self.high_score_rect)
         self.guns.draw(self.screen)
-
-    # def save_data(score, level = 0):
-    #     try:
-    #         conn = psycopg2.connect(
-    #             host="localhost",
-    #             port=5432,  
-    #             database="space_game", 
-    #             user="postgres",  
-    #             password="1235846Qq" 
-    #         )
-    #         cur = conn.cursor()
-    #         query = f"""
-    #             INSERT INTO game_results (game_title, points, level)
-    #             VALUES ('Space Game', {int(score)}, {int(level)})"""
-    #         cur.execute(query)
-    #         conn.commit()
-    #     except Exception as e:
-    #         print(f'Error: {e}')
-    #     finally:
-    #         cur.close()
-    #         conn.close()
