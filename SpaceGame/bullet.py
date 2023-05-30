@@ -1,6 +1,6 @@
 import pygame
 
-class Bullet(pygame.sprite.Sprite):
+class Bullet(pygame.sprite.Sprite): # create a child class of Sprite
     def __init__(self, screen, gun):
         # create a bullet object at the current position of the gun
         super(Bullet, self).__init__()

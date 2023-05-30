@@ -1,7 +1,7 @@
 import pygame
 from pygame.sprite import Sprite
 
-class Gun(Sprite):
+class Gun(Sprite): # create a child class of Sprite
 
     def __init__(self, screen):
         # initialize the gun and set its initial position
@@ -20,7 +20,7 @@ class Gun(Sprite):
         # draw a gun in the current position
         self.screen.blit(self.image, self.rect)
 
-    def update_gun(self):
+    def update_gun(self): 
         # update the position of the gun according to the flag
         if self.mright and self.rect.right < self.screen_rect.right:
             self.center += 1.5
