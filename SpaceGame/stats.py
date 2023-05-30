@@ -9,10 +9,10 @@ class Stats():
 
     def reset_stats(self):
     # initialize statistics that may change during the game
-        self.guns_left = 2
+        self.guns_left = 0
         self.score = 0
 
-    # def save_data(points, level):
+    # def save_data(score, level = 0):
     #     try:
     #         conn = psycopg2.connect(
     #             host="rogue.db.elephantsql.com",
@@ -24,7 +24,7 @@ class Stats():
     #         cur = conn.cursor()
     #         query = f"""
     #             INSERT INTO game_results (game_title, points, level)
-    #             VALUES ('Jumping Dino', {int(points)}, {int(level)})"""
+    #             VALUES ('Space Game', {int(score)}, {int(level)})"""
     #         cur.execute(query)
     #         conn.commit()
     #     except Exception as e:

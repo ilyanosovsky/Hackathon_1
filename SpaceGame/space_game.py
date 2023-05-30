@@ -3,8 +3,7 @@ from gun import Gun
 from pygame.sprite import Group
 from stats import Stats
 from scores import Scores
-import psycopg2
-from db import create_table
+# import psycopg2
 
 def run(): # Main function
 
@@ -35,36 +34,36 @@ def run(): # Main function
 
 run() # Run the game
 
-def manage_connection(query):
-    try:
-        connection = psycopg2.connect(
-            host="rogue.db.elephantsql.com",
-            port=5432,  
-            database="wocsykfv", 
-            user="wocsykfv",  
-            password="rwPJlc2S6ceN1uDanxX3cS9f2w9NCDJQ"  
-        )
-        with connection:
-            with connection.cursor() as cursor:
-                if "SELECT" in query:
-                    cursor.execute(query)
-                    result = cursor.fetchall()
-                    return result
-                else:
-                    cursor.execute(query)
-                    connection.commit()
-    except Exception as e:
-        print(e)
-    finally:
-        connection.close()
+# def manage_connection(query):
+#     try:
+#         connection = psycopg2.connect(
+#             host="localhost",
+#             port=5432,  
+#             database="space_game", 
+#             user="postgres",  
+#             password="1235846Qq"  
+#         )
+#         with connection:
+#             with connection.cursor() as cursor:
+#                 if "SELECT" in query:
+#                     cursor.execute(query)
+#                     result = cursor.fetchall()
+#                     return result
+#                 else:
+#                     cursor.execute(query)
+#                     connection.commit()
+#     except Exception as e:
+#         print(e)
+#     finally:
+#         connection.close()
 
-def get_result(points):
-        query = f"""
-        SELECT * FROM game_results 
-        ORDER BY {points} DESC LIMIT 1
-        """
-        if manage_connection(query) == []:
-            return None
-        else:
-            result = manage_connection(query)
-            return result
+# def get_result():
+#         query = f"""
+#         SELECT * FROM game_results 
+#         ORDER BY {score} DESC LIMIT 1
+#         """
+#         if manage_connection(query) == []:
+#             return None
+#         else:
+#             result = manage_connection(query)
+#             return result
