@@ -1,6 +1,4 @@
 import psycopg2
-from main import *
-
 
 def create_table():
     try:
@@ -32,29 +30,44 @@ def create_table():
     conn.close()
     cur.close()
 
-# create_table()
-# class TableMAnager:
+create_table()
 
-#     @classmethod
-#     def get_result(cls):
-#         query_user = f"""
-#         SELECT * FROM game_results 
-#         ORDER BY points DESC LIMIT 1
-#         """
-#         if manage_connection() == []:
-#             return None
-#         else:
-#             result = manage_connection()
-#             return result
-        
-#     @classmethod
-#     def all_items(cls):
-#         query_user = f"""
-#         SELECT * FROM menu_items
-#         """
-#         result = manage_connection()
-#         return result
+# from dino import score
 
-# # item2 = MenuManager.get_by_name('Beef Stew')
-# items = TableMAnager.all_items()
-# print(items)
+def manage_connection(query):
+    try:
+        connection = psycopg2.connect(
+            host="rogue.db.elephantsql.com",
+            port=5432,  
+            database="wocsykfv", 
+            user="wocsykfv",  
+            password="rwPJlc2S6ceN1uDanxX3cS9f2w9NCDJQ"  
+        )
+        with connection:
+            with connection.cursor() as cursor:
+                if "SELECT" in query:
+                    cursor.execute(query)
+                    result = cursor.fetchall()
+                    return result
+                else:
+                    cursor.execute(query)
+                    connection.commit()
+    except Exception as e:
+        print(e)
+    finally:
+        connection.close()
+
+def get_result():
+        query = f"""
+        SELECT MAX(points) FROM game_results
+        """
+        if manage_connection(query) == []:
+            return None
+        else:
+            result = manage_connection(query)
+            return result
+
+
+highest_score = int(get_result()[0][0])
+# print(type(highest_score))
+# print(highest_score)

@@ -1,7 +1,7 @@
 import pygame
 import random
 import psycopg2
-from db import manage_connection
+from db import highest_score
 
 pygame.init()
 
@@ -195,7 +195,7 @@ class Ptero(Obstacle):
 
 
 def main():
-    global game_speed, x_pos_bg, y_pos_bg, points, obstacles, level 
+    global game_speed, x_pos_bg, y_pos_bg, score, obstacles, level
     run = True
     clock = pygame.time.Clock()
     player = Dinosaur()
@@ -204,24 +204,28 @@ def main():
     obstacles = []
     x_pos_bg = 0
     y_pos_bg = 380
-    points = 0
+    score = 0
     level = 1
     font = pygame.font.Font('Dino/Roboto/Roboto-Black.ttf', 20)
     death_count = 0
 
-    def score():
-        global points, game_speed, level
-        points += 1
-        if points % 100 == 0:
+    def scores():
+        global score, game_speed, level, highest_score
+        score += 1
+        if score % 100 == 0:
             game_speed += 1
-            if points % 500 == 0:
+            if score % 500 == 0:
                 level += 1
         
         levels = font.render("Level: " + str(level), True, (0, 0, 0))
         levels_rect = levels.get_rect()
         levels_rect.center =  (100, 40)
         screen.blit(levels, levels_rect)
-        text = font.render("Points: " + str(points), True, (0, 0, 0))
+        high_score = font.render("High Score: " + str(highest_score), True, (0, 0, 0))
+        high_score_rect = high_score.get_rect()
+        high_score_rect.center = (550, 40)
+        screen.blit(high_score, high_score_rect)
+        text = font.render("Points: " + str(score), True, (0, 0, 0))
         text_rect = text.get_rect()
         text_rect.center = (1000, 40)
         screen.blit(text, text_rect)
@@ -236,7 +240,7 @@ def main():
             x_pos_bg = 0
         x_pos_bg -= game_speed
 
-    def save_data(points, level):
+    def save_data(score, level):
         try:
             conn = psycopg2.connect(
                 host="rogue.db.elephantsql.com",
@@ -248,7 +252,7 @@ def main():
             cur = conn.cursor()
             query = f"""
                 INSERT INTO game_results (game_title, points, level)
-                VALUES ('Jumping Dino', {int(points)}, {int(level)})"""
+                VALUES ('Jumping Dino', {int(score)}, {int(level)})"""
             cur.execute(query)
             conn.commit()
         except Exception as e:
@@ -282,7 +286,7 @@ def main():
             if player.dino_rect.colliderect(obstacle.rect):
                 pygame.time.delay(2000)
                 death_count += 1
-                save_data(points, level)
+                save_data(score, level)
                 menu(death_count)
 
         background()
@@ -290,14 +294,14 @@ def main():
         cloud.draw(screen)
         cloud.update()
 
-        score()
+        scores()
 
         clock.tick(30)
         pygame.display.update()
 
 
 def menu(death_count):
-    global points, level
+    global score, level, highest_score
     run = True
     lose = None
     while run:
@@ -308,14 +312,16 @@ def menu(death_count):
         elif death_count > 0:
             lose = font.render("GAME OVER", True, ('Black'))
             text = font.render("Press any Key to Restart", True, ('Black'))
-            score = font.render("Points: " + str(points), True, ('Black'))
-            score_rect = score.get_rect()
-            score_rect.center = (screen_width // 2, screen_height // 2 + 50)
-            screen.blit(score, score_rect)
+            points = font.render("Points: " + str(score), True, ('Black'))
+            points_rect = points.get_rect()
+            points_rect.center = (screen_width // 2, screen_height // 2 + 50)
+            screen.blit(points, points_rect)
             levels = font.render("Level: " + str(level), True, ('Black'))
             levels_rect = levels.get_rect()
             levels_rect.center =  (screen_width // 2, screen_height // 2 + 100)
             screen.blit(levels, levels_rect)
+            if score > highest_score:
+                highest_score = score
         if lose is not None:
             lose_rect = lose.get_rect()
             lose_rect.center = (screen_width  // 2, screen_height // 2 - 200)
@@ -335,38 +341,3 @@ def menu(death_count):
 
 
 menu(death_count=0)
-
-def manage_connection(query):
-    try:
-        connection = psycopg2.connect(
-            host="rogue.db.elephantsql.com",
-            port=5432,  
-            database="wocsykfv", 
-            user="wocsykfv",  
-            password="rwPJlc2S6ceN1uDanxX3cS9f2w9NCDJQ"  
-        )
-        with connection:
-            with connection.cursor() as cursor:
-                if "SELECT" in query:
-                    cursor.execute(query)
-                    result = cursor.fetchall()
-                    return result
-                else:
-                    cursor.execute(query)
-                    connection.commit()
-    except Exception as e:
-        print(e)
-    finally:
-        connection.close()
-
-def get_result(points):
-        query = f"""
-        SELECT * FROM game_results 
-        ORDER BY {points} DESC LIMIT 1
-        """
-        if manage_connection(query) == []:
-            return None
-        else:
-            result = manage_connection(query)
-            return result
-        
