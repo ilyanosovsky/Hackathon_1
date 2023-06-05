@@ -1,0 +1,13 @@
+Ilya and Ivan: 
+
+The game is engaging and the code functions in an organized and clean manner - excellent work! 
+You incorporated numerous concepts that we learned in the first 4 weeks. 
+I was particularly impressed by your decision to save the Dino game scores in a database; 
+utilizing this crucial tool in your project clearly indicates that you have a strong grasp of the concepts. 
+Please consider adding a requirements.txt file with all necessary modules to install.
+You can do it using the command: pip freeze > requirements.txt
+
+Python OOP: 10/10
+Databases: 7/10
+API/JSON: 0/10
+General score: 7
